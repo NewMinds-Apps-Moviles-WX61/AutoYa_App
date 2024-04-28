@@ -23,14 +23,9 @@ class InicioSesion extends StatelessWidget {
                   height: 100,
                 ),
                 Center(
-                  // Para centrar los elementos dentro del contenedor
-                  // ignore: prefer_const_constructors
                   child: Column(
-                    // Column para organizar los elementos en una columna
-                    mainAxisAlignment: MainAxisAlignment
-                        .center, // Alinear los elementos verticalmente al centro
-                    crossAxisAlignment: CrossAxisAlignment
-                        .start, // Alinear los elementos horizontalmente al inicio
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Register or log in', // Primer texto
