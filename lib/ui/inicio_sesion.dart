@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_application_1/ui/login.dart';
 
 class InicioSesion extends StatelessWidget {
   @override
@@ -118,8 +119,7 @@ class InicioSesion extends StatelessWidget {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  InicioSesion()),
+                                              builder: (context) => Login()),
                                         );
                                       },
                                   ),
