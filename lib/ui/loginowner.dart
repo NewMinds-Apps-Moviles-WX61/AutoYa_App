@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter_application_1/ui/inicio_sesion.dart';
-import 'package:flutter_application_1/ui/loginowner.dart';
-import 'package:flutter_application_1/ui/registertenant.dart';
+import 'package:flutter_application_1/ui/login.dart';
+import 'package:flutter_application_1/ui/registerowner.dart';
 
-class Login extends StatelessWidget {
+class LoginOwner extends StatelessWidget {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -23,7 +22,7 @@ class Login extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                      bottom: 30, top: 50), // Espaciado vertical
+                      bottom: 30, top: 80), // Espaciado vertical
                   child: Image.asset(
                     'assets/logoautoya.png',
                     height: 100,
@@ -38,7 +37,7 @@ class Login extends StatelessWidget {
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: 'Sign in Tenant',
+                            text: 'Sign in Owner',
                             style: TextStyle(
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold,
@@ -58,7 +57,7 @@ class Login extends StatelessWidget {
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: 'Are you a Tenant? ',
+                            text: 'Are you a Car Owner? ',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -66,7 +65,7 @@ class Login extends StatelessWidget {
                             ),
                             children: [
                               TextSpan(
-                                text: 'Go to car Owner',
+                                text: 'Go to Tenant',
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,
                                   color: Colors.blue,
@@ -77,7 +76,7 @@ class Login extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => LoginOwner()),
+                                          builder: (context) => Login()),
                                     );
                                   },
                               ),
@@ -148,7 +147,7 @@ class Login extends StatelessWidget {
                     Navigator.of(context)
                         //cambiar para redireccion de pagina
                         .push(MaterialPageRoute(
-                            builder: (context) => RegisterTenant()));
+                            builder: (context) => RegisterOwner()));
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
@@ -157,7 +156,7 @@ class Login extends StatelessWidget {
                         30)), // Ancho mínimo del botón y altura fija de 50
                   ),
                   child: Text(
-                    'REGISTER AS A TENANT',
+                    'REGISTER AS A OWNER',
                     style: TextStyle(
                       fontFamily: 'Arial', // Tipografía Arial
                       color: Colors.white,
