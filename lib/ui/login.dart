@@ -17,13 +17,11 @@ class Login extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(20.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment
-                  .center, // Alinea la columna verticalmente al centro
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                      bottom: 30, top: 50), // Espaciado vertical
+                  padding: EdgeInsets.only(bottom: 30, top: 50),
                   child: Image.asset(
                     'assets/logoautoya.png',
                     height: 100,
@@ -73,7 +71,6 @@ class Login extends StatelessWidget {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    // Aquí colocas la navegación hacia la página de registro
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -105,7 +102,6 @@ class Login extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
-                //texto de olvido la contraseña
                 Padding(
                   padding: EdgeInsets.only(bottom: 20, top: 20),
                   child: Center(
@@ -124,7 +120,6 @@ class Login extends StatelessWidget {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    // Aquí colocas la navegación hacia la página de registro
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -139,29 +134,25 @@ class Login extends StatelessWidget {
                     ),
                   ),
                 ),
-                //boton de login
                 SizedBox(
                   height: 30.0,
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        //cambiar para redireccion de pagina
-                        .push(MaterialPageRoute(
-                            builder: (context) => RegisterTenant()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RegisterTenant()));
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Colors.grey), // Color de fondo de boton
-                    minimumSize: MaterialStateProperty.all(Size(double.infinity,
-                        30)), // Ancho mínimo del botón y altura fija de 50
+                    backgroundColor: MaterialStateProperty.all(Colors.grey),
+                    minimumSize:
+                        MaterialStateProperty.all(Size(double.infinity, 30)),
                   ),
                   child: Text(
                     'REGISTER AS A TENANT',
                     style: TextStyle(
-                      fontFamily: 'Arial', // Tipografía Arial
+                      fontFamily: 'Arial',
                       color: Colors.white,
-                      fontSize: 20, // Color del texto blanco
+                      fontSize: 20,
                     ),
                   ),
                 ),
@@ -171,21 +162,19 @@ class Login extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context)
-                        //cambiar para redireccion de pagina
                         .push(MaterialPageRoute(builder: (context) => Login()));
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Colors.blue), // Color de fondo de boton
-                    minimumSize: MaterialStateProperty.all(Size(double.infinity,
-                        30)), // Ancho mínimo del botón y altura fija de 50
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    minimumSize:
+                        MaterialStateProperty.all(Size(double.infinity, 30)),
                   ),
                   child: Text(
                     'Sign in',
                     style: TextStyle(
-                      fontFamily: 'Arial', // Tipografía Arial
+                      fontFamily: 'Arial',
                       color: Colors.white,
-                      fontSize: 40, // Color del texto blanco
+                      fontSize: 40,
                     ),
                   ),
                 ),

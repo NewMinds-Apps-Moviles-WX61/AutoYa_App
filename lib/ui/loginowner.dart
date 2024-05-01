@@ -16,13 +16,11 @@ class LoginOwner extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(20.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment
-                  .center, // Alinea la columna verticalmente al centro
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                      bottom: 30, top: 80), // Espaciado vertical
+                  padding: EdgeInsets.only(bottom: 30, top: 80),
                   child: Image.asset(
                     'assets/logoautoya.png',
                     height: 100,
@@ -72,7 +70,6 @@ class LoginOwner extends StatelessWidget {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    // Aquí colocas la navegación hacia la página de registro
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -104,7 +101,7 @@ class LoginOwner extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
-                //texto de olvido la contraseña
+
                 Padding(
                   padding: EdgeInsets.only(bottom: 20, top: 20),
                   child: Center(
@@ -123,7 +120,6 @@ class LoginOwner extends StatelessWidget {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    // Aquí colocas la navegación hacia la página de registro
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -144,23 +140,20 @@ class LoginOwner extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        //cambiar para redireccion de pagina
-                        .push(MaterialPageRoute(
-                            builder: (context) => RegisterOwner()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RegisterOwner()));
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Colors.grey), // Color de fondo de boton
-                    minimumSize: MaterialStateProperty.all(Size(double.infinity,
-                        30)), // Ancho mínimo del botón y altura fija de 50
+                    backgroundColor: MaterialStateProperty.all(Colors.grey),
+                    minimumSize:
+                        MaterialStateProperty.all(Size(double.infinity, 30)),
                   ),
                   child: Text(
                     'REGISTER AS A OWNER',
                     style: TextStyle(
-                      fontFamily: 'Arial', // Tipografía Arial
+                      fontFamily: 'Arial',
                       color: Colors.white,
-                      fontSize: 20, // Color del texto blanco
+                      fontSize: 20,
                     ),
                   ),
                 ),
@@ -170,21 +163,19 @@ class LoginOwner extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context)
-                        //cambiar para redireccion de pagina
                         .push(MaterialPageRoute(builder: (context) => Login()));
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Colors.blue), // Color de fondo de boton
-                    minimumSize: MaterialStateProperty.all(Size(double.infinity,
-                        30)), // Ancho mínimo del botón y altura fija de 50
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    minimumSize:
+                        MaterialStateProperty.all(Size(double.infinity, 30)),
                   ),
                   child: Text(
                     'Sign in',
                     style: TextStyle(
-                      fontFamily: 'Arial', // Tipografía Arial
+                      fontFamily: 'Arial',
                       color: Colors.white,
-                      fontSize: 40, // Color del texto blanco
+                      fontSize: 40,
                     ),
                   ),
                 ),

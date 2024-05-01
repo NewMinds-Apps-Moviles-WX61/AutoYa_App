@@ -19,30 +19,27 @@ class InicioSesion extends StatelessWidget {
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              // Espaciado vertical
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding:
-                          EdgeInsets.only(bottom: 20), // Espaciado vertical
+                      padding: EdgeInsets.only(bottom: 20),
                       child: Image.asset(
                         'assets/logoautoya.png',
                         height: 140,
                       ),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.only(bottom: 20), // Espaciado vertical
+                      padding: EdgeInsets.only(bottom: 20),
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Register or log in', // Primer texto
+                              'Register or log in',
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 20,
@@ -65,15 +62,14 @@ class InicioSesion extends StatelessWidget {
                       child: InteractiveButtonfacebook(),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.only(bottom: 20), // Espaciado vertical
+                      padding: EdgeInsets.only(bottom: 20),
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'or continue with email', // Primer texto
+                              'or continue with email',
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 20,
@@ -115,7 +111,6 @@ class InicioSesion extends StatelessWidget {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        // Aquí colocas la navegación hacia la página de registro
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(

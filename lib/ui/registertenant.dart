@@ -152,13 +152,12 @@ class _RegisterState extends State<RegisterTenant> {
                     ),
                   ),
                   child: Padding(
-                    padding:
-                        EdgeInsets.all(8.0), // Ajusta el relleno del icono aquí
+                    padding: EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.person), // Icono aquí
-                        SizedBox(width: 8), // Espacio entre el icono y el texto
+                        Icon(Icons.person),
+                        SizedBox(width: 8),
                         Text('REGISTER'),
                       ],
                     ),
