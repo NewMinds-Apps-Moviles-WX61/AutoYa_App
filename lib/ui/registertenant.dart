@@ -96,6 +96,8 @@ class _RegisterState extends State<RegisterTenant> {
                 _buildTextField(
                   controller: _nameController,
                   labelText: 'Name',
+                  
+                  
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),

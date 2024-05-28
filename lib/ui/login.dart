@@ -88,6 +88,9 @@ class Login extends StatelessWidget {
                     ),
                   ),
                 ),
+
+
+
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -103,7 +106,13 @@ class Login extends StatelessWidget {
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: Colors.white),
                 ),
+
+
+
+
                 SizedBox(height: 20.0),
+
+                
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
@@ -118,6 +127,11 @@ class Login extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
+
+
+
+
+
                 Padding(
                   padding: EdgeInsets.only(bottom: 20, top: 20),
                   child: Center(
