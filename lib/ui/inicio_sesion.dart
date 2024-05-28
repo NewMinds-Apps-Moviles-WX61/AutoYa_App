@@ -15,7 +15,7 @@ class InicioSesion extends StatelessWidget {
               'assets/fon2.jpg',
             ),
           ),
-          Container(color: Color.fromRGBO(255, 255, 255, 0.6)),
+          Container(color: Color.fromRGBO(2, 2, 2, 0.6)),
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),

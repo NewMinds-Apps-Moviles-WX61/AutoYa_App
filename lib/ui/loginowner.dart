@@ -11,6 +11,7 @@ class LoginOwner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 19, 19, 19),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -39,7 +40,7 @@ class LoginOwner extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                                color: const Color.fromARGB(255, 239, 16, 0)),
                           ),
                         ),
                       ],
@@ -59,14 +60,14 @@ class LoginOwner extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: const Color.fromARGB(255, 255, 255, 255),
                             ),
                             children: [
                               TextSpan(
                                 text: 'Go to Tenant',
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,
-                                  color: Colors.blue,
+                                  color: const Color.fromARGB(255, 9, 207, 16),
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
@@ -84,23 +85,49 @@ class LoginOwner extends StatelessWidget {
                     ),
                   ),
                 ),
+
+
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: const Color.fromARGB(255, 187, 187, 187)),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white), // Borde blanco
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color.fromARGB(255, 42, 235, 48)),
+              ),
                   ),
                   keyboardType: TextInputType.emailAddress,
+                   style: TextStyle(color: Colors.white),
                 ),
+
+
+
                 SizedBox(height: 20.0),
+
+
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(),
+                     labelStyle: TextStyle(color: const Color.fromARGB(255, 187, 187, 187)),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white), // Borde blanco
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color.fromARGB(255, 42, 235, 48)),
+              ),
                   ),
+                  style: TextStyle(color: Colors.white),
                   obscureText: true,
                 ),
+
+
+
+
+
 
                 Padding(
                   padding: EdgeInsets.only(bottom: 20, top: 20),
@@ -116,7 +143,7 @@ class LoginOwner extends StatelessWidget {
                                 text: 'FORGOT YOUR PASSWORD',
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,
-                                  color: Colors.blue,
+                                  color: const Color.fromARGB(255, 9, 207, 16),
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
@@ -144,7 +171,7 @@ class LoginOwner extends StatelessWidget {
                         builder: (context) => RegisterOwner()));
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.grey),
+                    backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 65, 65, 65)),
                     minimumSize:
                         MaterialStateProperty.all(Size(double.infinity, 30)),
                   ),
@@ -166,7 +193,7 @@ class LoginOwner extends StatelessWidget {
                         .push(MaterialPageRoute(builder: (context) => Login()));
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 9, 207, 16)),
                     minimumSize:
                         MaterialStateProperty.all(Size(double.infinity, 30)),
                   ),

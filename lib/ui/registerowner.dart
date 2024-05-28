@@ -31,6 +31,7 @@ class _RegisterState extends State<RegisterOwner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 19, 19, 19),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -45,6 +46,7 @@ class _RegisterState extends State<RegisterOwner> {
                     style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 252, 30, 14),
                     ),
                   ),
                 ),
@@ -60,7 +62,7 @@ class _RegisterState extends State<RegisterOwner> {
                         );
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 207, 16)),
                         foregroundColor:
                             MaterialStateProperty.all(Colors.white),
                         textStyle: MaterialStateProperty.all(
@@ -142,11 +144,11 @@ class _RegisterState extends State<RegisterOwner> {
                     );
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 207, 16)),
                     foregroundColor: MaterialStateProperty.all(Colors.white),
                     textStyle: MaterialStateProperty.all(
                       TextStyle(
-                        fontSize: 40,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
