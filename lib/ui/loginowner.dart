@@ -2,11 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_application_1/ui/login.dart';
+import 'package:flutter_application_1/ui/inicio_sesion.dart';
 import 'package:flutter_application_1/ui/registerowner.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginOwner extends StatelessWidget {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  // ---------------------------------------------------------------------
+
+Future<void> _login(BuildContext context) async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    // Realizar la solicitud HTTP al backend
+    var url = Uri.parse('https://auto-ya-moviles-backend.azurewebsites.net/api/v1/users/login');
+    var response = await http.post(
+      url,
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, String>{'email': email, 'password': password}),
+    );
+
+if (response.statusCode == 200) {
+      // Si el inicio de sesión es exitoso, redirigir al usuario a la página de inicio de sesión
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => InicioSesion()),
+      );
+    } else {
+      // Si hay un error, mostrar un mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: Usuario o contraseña incorrectos')),
+      );
+    }
+  }
+
+
+
+
+   // ---------------------------------------------------------------------
+
 
   @override
   Widget build(BuildContext context) {
@@ -187,13 +223,11 @@ class LoginOwner extends StatelessWidget {
                 SizedBox(
                   height: 30.0,
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => Login()));
-                  },
+               TextButton(
+                  onPressed: () => _login(context), // Logeo
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 9, 207, 16)),
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 9, 207, 16)),
                     minimumSize:
                         MaterialStateProperty.all(Size(double.infinity, 30)),
                   ),
