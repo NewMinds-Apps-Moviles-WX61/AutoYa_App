@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter_application_1/ui/loginowner.dart';
 import 'package:flutter_application_1/ui/registertenant.dart';
 
@@ -13,7 +15,8 @@ class _RegisterState extends State<RegisterOwner> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
+  TextEditingController _dniController = TextEditingController();
+ //-----------------------------------------------------------------
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -28,6 +31,41 @@ class _RegisterState extends State<RegisterOwner> {
     }
   }
 
+  Future<void> _register() async {
+    final String apiUrl = "https://auto-ya-moviles-backend.azurewebsites.net/api/v1/propietaries";
+    final Map<String, dynamic> data = {
+      "name": _nameController.text,
+      "email": _emailController.text,
+      "password": _passwordController.text,
+      "phoneNumber": _phoneController.text,
+      "dni": _dniController.text,
+      "photoURL": "https://i.postimg.cc/QMYLzms6/6326055.png",
+      "ContractURL": "contract.com",
+    };
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginOwner()),
+      );
+    } else {
+      // Handle errors here
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration failed. Please try again.')),
+      );
+    }
+  }
+ //-----------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,14 +95,13 @@ class _RegisterState extends State<RegisterOwner> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterOwner()),
+                          MaterialPageRoute(builder: (context) => RegisterOwner()),
                         );
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 207, 16)),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                        backgroundColor: MaterialStateProperty.all(
+                            Color.fromARGB(255, 9, 207, 16)),
+                        foregroundColor: MaterialStateProperty.all(Colors.white),
                         textStyle: MaterialStateProperty.all(
                           TextStyle(fontSize: 20),
                         ),
@@ -76,14 +113,12 @@ class _RegisterState extends State<RegisterOwner> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterTenant()),
+                          MaterialPageRoute(builder: (context) => RegisterTenant()),
                         );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                        foregroundColor: MaterialStateProperty.all(Colors.white),
                         textStyle: MaterialStateProperty.all(
                           TextStyle(fontSize: 20),
                         ),
@@ -96,31 +131,6 @@ class _RegisterState extends State<RegisterOwner> {
                 _buildTextField(
                   controller: _nameController,
                   labelText: 'Name',
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: InkWell(
-                    onTap: () {
-                      _selectDate(context);
-                    },
-                    child: InputDecorator(
-                      decoration: InputDecoration(
-                        labelText: 'Birthday',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            '${_birthday.day}/${_birthday.month}/${_birthday.year}',
-                          ),
-                          Icon(Icons.calendar_today),
-                        ],
-                      ),
-                    ),
-                  ),
                 ),
                 _buildTextField(
                   controller: _phoneController,
@@ -135,16 +145,17 @@ class _RegisterState extends State<RegisterOwner> {
                   labelText: 'Password',
                   obscureText: true,
                 ),
+                _buildTextField(
+                  controller: _dniController,
+                  labelText: 'DNI',
+                  obscureText: false,
+                ),
                 SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginOwner()),
-                    );
-                  },
+                  onPressed: _register,
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 207, 16)),
+                    backgroundColor:
+                        MaterialStateProperty.all(Color.fromARGB(255, 9, 207, 16)),
                     foregroundColor: MaterialStateProperty.all(Colors.white),
                     textStyle: MaterialStateProperty.all(
                       TextStyle(
@@ -177,12 +188,14 @@ class _RegisterState extends State<RegisterOwner> {
     required TextEditingController controller,
     required String labelText,
     bool obscureText = false,
+    
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
         controller: controller,
         obscureText: obscureText,
+        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           labelText: labelText,
           border: OutlineInputBorder(),
