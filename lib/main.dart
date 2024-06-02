@@ -1,10 +1,17 @@
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
-void main() {
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MyApp());
 }
 
@@ -39,7 +46,7 @@ class MyApp extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: HomeScreen(),
+              child: InicioSesion(),
             ),
           ],
         ),
@@ -52,6 +59,7 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
@@ -73,21 +81,57 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _selectedIndex == 1 || _selectedIndex == 2 || _selectedIndex == 3 || _selectedIndex == 4
+      appBar: _selectedIndex != 0
           ? AppBar(
-        title: Text(_selectedIndex == 1 ? 'Register Car' : (_selectedIndex == 2 ? 'Search Cars' : (_selectedIndex == 3 ? 'Chats' : 'Profile'))),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
+        backgroundColor: Color(0xFF03253C),
+        leading: GestureDetector(
+          onTap: () {
             setState(() {
               _selectedIndex = 0;
             });
           },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'lib/assets/car2.png',
+              height: 30,
+            ),
+          ),
         ),
       )
-          : null,
+          : AppBar(
+        backgroundColor: Color(0xFF03253C),
+        leading: GestureDetector(
+          onTap: () {
+            // Aquí dirige al Home
+            Navigator.pushReplacementNamed(context, '/home');
+          },
+        ),
+        title: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                'lib/assets/car2.png',
+                height: 30,
+              ),
+            ),
+            Text(
+              'AutoYa',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFFA0F0F),
+                fontSize: 35,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: _selectedIndex != 1 && _selectedIndex != 2 && _selectedIndex != 3 && _selectedIndex != 4
+      bottomNavigationBar: _selectedIndex != 1 &&
+          _selectedIndex != 2 &&
+          _selectedIndex != 3 &&
+          _selectedIndex != 4
           ? Container(
         color: Color(0xFF03253C),
         child: BottomNavigationBar(
@@ -127,6 +171,1284 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 
+/**********************************************************/
+
+class InicioSesion extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+                'assets/fon2.jpg',
+                fit: BoxFit.cover
+            ),
+          ),
+          Container(color: Color.fromRGBO(2, 2, 2, 0.6)),
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Image.asset(
+                        'lib/assets/car2.png',
+                        height: 140,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Register or log in',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    //------------------google
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: InteractiveButtongoogle(),
+                    ),
+                    //-------------------facebook
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: InteractiveButtonfacebook(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'or continue with email',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    //-------------------email
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: InteractiveButtonemail(),
+                    ),
+                    //---------------------------------
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                text: 'Already have an account ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'SIGN UP',
+                                    style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: Colors.blue,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Login()),
+                                        );
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/*login de ambos*/
+class Login extends StatelessWidget {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  // ---------------------------------------------------------------------
+
+  Future<void> _login(BuildContext context) async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    // Realizar la solicitud HTTP al backend
+    var url = Uri.parse(
+        'https://auto-ya-moviles-backend.azurewebsites.net/api/v1/users/login');
+    var response = await http.post(
+      url,
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, String>{'email': email, 'password': password}),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      // Si hay un error, mostrar un mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: Usuario o contraseña incorrectos')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 19, 19, 19),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 30, top: 50),
+                  child: Image.asset(
+                    'lib/assets/car2.png',
+                    height: 100,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'Sign in Tenant',
+                            style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 239, 16, 0)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'Are you a Tenant? ',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Go to car Owner',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: const Color.fromARGB(255, 9, 207, 16),
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginOwner()),
+                                    );
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    labelStyle: TextStyle(
+                        color: const Color.fromARGB(255, 187, 187, 187)),
+                    border: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: Colors.white), // Borde blanco
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: Color.fromARGB(255, 42, 235, 48)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red[400]!, width: 2.0),
+                    ),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(color: Colors.white),
+                ),
+
+                SizedBox(height: 20.0),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    labelStyle: TextStyle(
+                        color: const Color.fromARGB(255, 187, 187, 187)),
+                    border: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: Colors.white), // Borde blanco
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: Color.fromARGB(255, 42, 235, 48)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red[400]!, width: 2.0),
+                    ),
+                  ),
+                  obscureText: true,
+                  style: TextStyle(color: Colors.white),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20, top: 20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'FORGOT YOUR PASSWORD',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: const Color.fromARGB(255, 9, 207, 16),
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Login()),
+                                    );
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RegisterTenant()));
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 65, 65, 65)),
+                    minimumSize:
+                    MaterialStateProperty.all(Size(double.infinity, 30)),
+                  ),
+                  child: Text(
+                    'REGISTER AS A TENANT',
+                    style: TextStyle(
+                      fontFamily: 'Arial',
+                      color: Colors.white,
+                      fontSize: 26,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                  width: 18.0,
+                ),
+                TextButton(
+                  onPressed: () => _login(context),
+                  // Llamar a la función de inicio de sesión
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 9, 207, 16)),
+                    minimumSize:
+                    MaterialStateProperty.all(Size(double.infinity, 30)),
+                  ),
+                  child: Text(
+                    'SIGN IN',
+                    style: TextStyle(
+                      fontFamily: 'Arial',
+                      color: Colors.white,
+                      fontSize: 32,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LoginOwner extends StatelessWidget {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  // ---------------------------------------------------------------------
+
+  Future<void> _login(BuildContext context) async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    // Realizar la solicitud HTTP al backend
+    var url = Uri.parse(
+        'https://auto-ya-moviles-backend.azurewebsites.net/api/v1/users/login');
+    var response = await http.post(
+      url,
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, String>{'email': email, 'password': password}),
+    );
+
+    if (response.statusCode == 200) {
+      // Si el inicio de sesión es exitoso, redirigir al usuario a la página de inicio de sesión
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      // Si hay un error, mostrar un mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: Usuario o contraseña incorrectos')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 19, 19, 19),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 30, top: 80),
+                  child: Image.asset(
+                    'lib/assets/car2.png',
+                    height: 100,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'Sign in Owner',
+                            style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 239, 16, 0)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: 'Are you a Car Owner? ',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Go to Tenant',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: const Color.fromARGB(255, 9, 207, 16),
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Login()),
+                                    );
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    labelStyle: TextStyle(
+                        color: const Color.fromARGB(255, 187, 187, 187)),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.white), // Borde blanco
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 42, 235, 48)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red[400]!, width: 2.0),
+                    ),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(color: Colors.white),
+                ),
+
+                SizedBox(height: 20.0),
+                TextField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    labelStyle: TextStyle(
+                        color: const Color.fromARGB(255, 187, 187, 187)),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.white), // Borde blanco
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 42, 235, 48)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red[400]!, width: 2.0),
+                    ),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                  obscureText: true,
+                ),
+
+
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20, top: 20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'FORGOT YOUR PASSWORD',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: const Color.fromARGB(255, 9, 207, 16),
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Login()),
+                                    );
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                //boton de login
+                SizedBox(
+                  height: 30.0,
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RegisterOwner()));
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 65, 65, 65)),
+                    minimumSize:
+                    MaterialStateProperty.all(Size(double.infinity, 30)),
+                  ),
+                  child: Text(
+                    'REGISTER AS A OWNER',
+                    style: TextStyle(
+                      fontFamily: 'Arial',
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                TextButton(
+                  onPressed: () => _login(context), // Logeo
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 9, 207, 16)),
+                    minimumSize:
+                    MaterialStateProperty.all(Size(double.infinity, 30)),
+                  ),
+                  child: Text(
+                    'Sign in',
+                    style: TextStyle(
+                      fontFamily: 'Arial',
+                      color: Colors.white,
+                      fontSize: 40,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*Register everyone*/
+class RegisterTenant extends StatefulWidget {
+  @override
+  _RegisterState createState() => _RegisterState();
+}
+
+class _RegisterState extends State<RegisterTenant> {
+  TextEditingController _nameController = TextEditingController();
+  DateTime _birthday = DateTime.now();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _dniController = TextEditingController();
+  TextEditingController _licencenumberController = TextEditingController();
+
+  //-----------------------------------------------------------------
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _birthday,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != _birthday) {
+      setState(() {
+        _birthday = picked;
+      });
+    }
+  }
+
+  Future<void> _register() async {
+    final String apiUrl = "https://auto-ya-moviles-backend.azurewebsites.net/api/v1/tenants";
+    final Map<String, dynamic> data = {
+      "name": _nameController.text,
+      "email": _emailController.text,
+      "password": _passwordController.text,
+      "phoneNumber": _phoneController.text,
+      "dni": _dniController.text,
+      "LicenceNumber": _licencenumberController.text,
+      "photoURL": "https://i.postimg.cc/QMYLzms6/6326055.png",
+      "CriminalRecordURL": "criminalrecord.com"
+    };
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(data),
+
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+    } else {
+      // Handle errors here
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration failed. Please try again.')),
+      );
+    }
+  }
+
+  //-----------------------------------------------------------------
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 19, 19, 19),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+            Padding(
+            padding: const EdgeInsets.only(bottom: 20.0, top: 40),
+            child: Text(
+              'Register Tenant',
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 252, 30, 14),
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RegisterOwner()),
+                  );
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.grey[600]),
+                  foregroundColor:
+                  MaterialStateProperty.all(Colors.white),
+                  textStyle: MaterialStateProperty.all(
+                    TextStyle(fontSize: 20),
+                  ),
+                ),
+                child: Text('OWNER'),
+              ),
+              SizedBox(width: 30),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RegisterTenant()),
+                  );
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Color.fromARGB(255, 9, 207, 16)),
+                  foregroundColor:
+                  MaterialStateProperty.all(Colors.white),
+                  textStyle: MaterialStateProperty.all(
+                    TextStyle(fontSize: 20),
+                  ),
+                ),
+                child: Text('TENANT'),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          _buildTextField(
+            controller: _nameController,
+            labelText: 'Name',
+          ),
+          SizedBox(height: 15),
+          _buildTextField(
+            controller: _phoneController,
+            labelText: 'Phone',
+          ),
+          SizedBox(height: 15),
+          _buildTextField(
+            controller: _emailController,
+            labelText: 'Email',
+          ),
+          SizedBox(height: 15),
+          _buildTextField(
+            controller: _dniController,
+            labelText: 'DNI',
+          ),
+          SizedBox(height: 15),
+          _buildTextField(
+            controller: _passwordController,
+            labelText: 'Password',
+            obscureText: true,
+          ),
+          SizedBox(height: 15),
+          _buildTextField(
+            controller: _licencenumberController,
+            labelText: 'Licence Number',
+            obscureText: true,
+          ),
+          SizedBox(height: 40),
+          ElevatedButton(
+            onPressed: _register,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                  Color.fromARGB(255, 4, 221, 4)),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+              textStyle: MaterialStateProperty.all(
+                TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'REGISTER',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),)
+    ,
+    )
+    ,
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    bool obscureText = false,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: TextStyle(color: Colors.white),
+        floatingLabelStyle: TextStyle(color: Colors.white),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.green, width: 2.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red[400]!, width: 2.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+      ),
+    );
+  }
+}
+
+class RegisterOwner extends StatefulWidget {
+  @override
+  _RegisterStateOwner createState() => _RegisterStateOwner();
+}
+
+class _RegisterStateOwner extends State<RegisterOwner> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _dniController = TextEditingController();
+
+  String _message = '';
+
+  Future<void> _registerOwner() async {
+    if (_formKey.currentState!.validate()) {
+      final response = await http.post(
+        Uri.parse('https://auto-ya-moviles-backend.azurewebsites.net/api/v1/propietaries'),
+        body: jsonEncode({
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'password': _passwordController.text,
+          'phoneNumber': _phoneController.text,
+          'dni': _dniController.text,
+          'photoURL': 'https://i.postimg.cc/QMYLzms6/6326055.png',
+          'ContractURL': 'contract.com',
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final userId = data['id'];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userId', userId.toString());
+        await prefs.setString('userName', _nameController.text);
+        await prefs.setString('userEmail', _emailController.text);
+        await prefs.setString('userPhone', _phoneController.text);
+        await prefs.setString('userDni', _dniController.text);
+
+        setState(() {
+          _message = 'Owner registered successfully';
+        });
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginOwner()),
+        );
+      } else {
+        print('Response status: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        setState(() {
+          _message = 'Failed to register owner';
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 19, 19, 19),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0, top: 40),
+                child: Container(
+                  height: 100,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Register Owner',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 252, 30, 14),
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterOwner()),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(255, 9, 207, 16)),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                        TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    child: Text('OWNER'),
+                  ),
+                  SizedBox(width: 30),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterTenant()),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.grey),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                        TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    child: Text('TENANT'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              _buildTextField(
+                controller: _nameController,
+                labelText: 'Name',
+              ),
+              SizedBox(height: 15),
+              _buildTextField(
+                controller: _phoneController,
+                labelText: 'Phone',
+              ),
+              SizedBox(height: 15),
+              _buildTextField(
+                controller: _emailController,
+                labelText: 'Email',
+              ),
+              SizedBox(height: 15),
+              _buildTextField(
+                controller: _passwordController,
+                labelText: 'Password',
+                obscureText: true,
+              ),
+              SizedBox(height: 15),
+              _buildTextField(
+                controller: _dniController,
+                labelText: 'DNI',
+                obscureText: false,
+              ),
+              SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: _registerOwner,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 207, 16)),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  textStyle: MaterialStateProperty.all(
+                    TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(width: 8),
+                      Text('REGISTER'),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(_message, style: TextStyle(color: Colors.white)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    bool obscureText = false,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: TextStyle(color: Colors.white),
+        floatingLabelStyle: TextStyle(color: Colors.white),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.green, width: 2.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red[400]!, width: 2.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+      ),
+    );
+  }
+}
+
+
+//boton de continue con google
+class InteractiveButtongoogle extends StatefulWidget {
+  @override
+  _InteractiveButtonStategoogle createState() =>
+      _InteractiveButtonStategoogle();
+}
+
+class _InteractiveButtonStategoogle extends State {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() {
+          _isPressed = true;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _isPressed = false;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _isPressed = false;
+        });
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 150),
+        width: _isPressed ? 180 : 200,
+        height: _isPressed ? 60 : 70,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              child: Image.asset(
+                'lib/assets/logogoogle.png',
+              ),
+            ),
+            SizedBox(width: 10),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Continue with Google',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//boton de continue con facebook
+class InteractiveButtonfacebook extends StatefulWidget {
+  @override
+  _InteractiveButtonStatefacebook createState() =>
+      _InteractiveButtonStatefacebook();
+}
+
+class _InteractiveButtonStatefacebook extends State {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() {
+          _isPressed = true;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _isPressed = false;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _isPressed = false;
+        });
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 150),
+        width: _isPressed ? 180 : 200,
+        height: _isPressed ? 60 : 70,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              child: Image.asset(
+                'lib/assets/logofacebook.png',
+              ),
+            ),
+            SizedBox(width: 10),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Continue with Facebook',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//boton de continue con email
+class InteractiveButtonemail extends StatefulWidget {
+  @override
+  _InteractiveButtonStateemail createState() => _InteractiveButtonStateemail();
+}
+
+class _InteractiveButtonStateemail extends State {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() {
+          _isPressed = true;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _isPressed = false;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _isPressed = false;
+        });
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 150),
+        width: _isPressed ? 180 : 200,
+        height: _isPressed ? 60 : 70,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 30,
+              height: 30,
+              child: Image.asset(
+                'lib/assets/logoemail.png',
+              ),
+            ),
+            SizedBox(width: 10),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Continue with Email',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+/**********************************************************/
+
 class StarRating extends StatelessWidget {
   final int numberOfStars;
 
@@ -145,6 +1467,7 @@ class StarRating extends StatelessWidget {
     );
   }
 }
+
 class PopularServicesScreen extends StatefulWidget {
   @override
   _PopularServicesScreenState createState() => _PopularServicesScreenState();
@@ -161,7 +1484,8 @@ class _PopularServicesScreenState extends State<PopularServicesScreen> {
   }
 
   List<String> placeholderImageUrls = [
-    'https://static.retail.autofact.cl/blog/20161018170049_740x3708932509314539659214.jpg', // Placeholder 1
+    'https://static.retail.autofact.cl/blog/20161018170049_740x3708932509314539659214.jpg',
+    // Placeholder 1
     'https://derco-pe-prod.s3.amazonaws.com/images/versions/2021-05-06-changan_alsvin_640x400..jpg',
     'https://www.elcarrocolombiano.com/wp-content/uploads/2021/01/20210124-LOS-10-CARROS-MAS-VENDIDOS-DEL-MUNDO-EN-2020-01.jpg',
     'https://www.elcarrocolombiano.com/wp-content/uploads/2019/01/20190121-TOP-100-AUTOS-MAS-VENDIDOS-DEL-MUNDO-EN-2018-01.jpg',
@@ -188,7 +1512,8 @@ class _PopularServicesScreenState extends State<PopularServicesScreen> {
               String imageUrl;
               do {
                 final random = Random();
-                imageUrl = placeholderImageUrls[random.nextInt(placeholderImageUrls.length)];
+                imageUrl = placeholderImageUrls[random.nextInt(
+                    placeholderImageUrls.length)];
               } while (usedImageUrls.contains(imageUrl));
               service['photoURL'] = imageUrl;
               usedImageUrls.add(imageUrl);
@@ -247,7 +1572,8 @@ class _PopularServicesScreenState extends State<PopularServicesScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: NetworkImage(service['photoURL'] ?? 'https://via.placeholder.com/80'),
+                              image: NetworkImage(service['photoURL'] ??
+                                  'https://via.placeholder.com/80'),
                               fit: BoxFit.contain,
                             ),
                             border: Border.all(
@@ -324,16 +1650,20 @@ class _PopularServicesScreenState extends State<PopularServicesScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
                                     children: [
                                       // Imagen con borde...
                                       Container(
                                         width: double.infinity,
                                         height: 150,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderRadius: BorderRadius.circular(
+                                              10.0),
                                           image: DecorationImage(
-                                            image: NetworkImage(service['photoURL'] ?? 'https://via.placeholder.com/150'),
+                                            image: NetworkImage(
+                                                service['photoURL'] ??
+                                                    'https://via.placeholder.com/150'),
                                             fit: BoxFit.cover,
                                           ),
                                           border: Border.all(
@@ -366,10 +1696,12 @@ class _PopularServicesScreenState extends State<PopularServicesScreen> {
                                       // Ubicación...
                                       Row(
                                         children: [
-                                          Icon(Icons.location_on, color: Colors.red, size: 16),
+                                          Icon(Icons.location_on,
+                                              color: Colors.red, size: 16),
                                           SizedBox(width: 4),
                                           Text(
-                                            service['location'] ?? 'Unknown location',
+                                            service['location'] ??
+                                                'Unknown location',
                                             style: TextStyle(
                                               fontSize: 14,
                                               color: Colors.black54,
@@ -381,10 +1713,12 @@ class _PopularServicesScreenState extends State<PopularServicesScreen> {
                                       // Estado...
                                       Row(
                                         children: [
-                                          Icon(Icons.info, color: Colors.blue, size: 16),
+                                          Icon(Icons.info, color: Colors.blue,
+                                              size: 16),
                                           SizedBox(width: 4),
                                           Text(
-                                            service['status'] ?? 'Unknown status',
+                                            service['status'] ??
+                                                'Unknown status',
                                             style: TextStyle(
                                               fontSize: 14,
                                               color: Colors.black54,
@@ -398,7 +1732,8 @@ class _PopularServicesScreenState extends State<PopularServicesScreen> {
                                       SizedBox(height: 10),
                                       // Botones...
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceEvenly,
                                         children: [
                                           // Botón de like...
                                           IconButton(
@@ -447,6 +1782,25 @@ class _PopularServicesScreenState extends State<PopularServicesScreen> {
   }
 }
 
+String generateRandomPlate() {
+  Random random = Random();
+  String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  String numbers = '0123456789';
+  String plate = '';
+
+  // Genera tres letras aleatorias
+  for (int i = 0; i < 3; i++) {
+    plate += letters[random.nextInt(letters.length)];
+  }
+
+  // Genera tres números aleatorios
+  for (int i = 0; i < 3; i++) {
+    plate += numbers[random.nextInt(numbers.length)];
+  }
+
+  return plate;
+}
+
 class RegisterCar extends StatefulWidget {
   @override
   _RegisterCarState createState() => _RegisterCarState();
@@ -454,221 +1808,255 @@ class RegisterCar extends StatefulWidget {
 
 class _RegisterCarState extends State<RegisterCar> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _plateController = TextEditingController();
   final TextEditingController _brandController = TextEditingController();
   final TextEditingController _modelController = TextEditingController();
-  final TextEditingController _yearManufacturedController =
-  TextEditingController();
+  final TextEditingController _yearManufacturedController = TextEditingController();
   final TextEditingController _fuelTypeController = TextEditingController();
   final TextEditingController _transmissionController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _passengerCapacityController =
-  TextEditingController();
+  final TextEditingController _passengerCapacityController = TextEditingController();
   final TextEditingController _colorController = TextEditingController();
   final TextEditingController _mileageController = TextEditingController();
   final TextEditingController _conditionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _acController = TextEditingController();
-  final TextEditingController _gpsController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _statusController = TextEditingController();
-
-  String _message = '';
+  bool _acValue = false;
+  bool _gpsValue = false;
 
   Future<void> _registerCar() async {
     if (_formKey.currentState!.validate()) {
-      final response = await http.post(
-        Uri.parse('https://auto-ya-moviles-backend.azurewebsites.net/api/v1/cars'),
-        body: {
-          'plate': _plateController.text,
-          'brand': _brandController.text,
-          'model': _modelController.text,
-          'yearManufactured': _yearManufacturedController.text,
-          'fuelType': _fuelTypeController.text,
-          'transmission': _transmissionController.text,
-          'category': _categoryController.text,
-          'passengerCapacity': _passengerCapacityController.text,
-          'color': _colorController.text,
-          'mileage': _mileageController.text,
-          'condition': _conditionController.text,
-          'price': _priceController.text,
-          'ac': _acController.text,
-          'gps': _gpsController.text,
-          'location': _locationController.text,
-          'status': _statusController.text,
-        },
-      );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? propietaryID = prefs.getString('userId');
 
-      if (response.statusCode == 200) {
+      if (propietaryID != null) {
+        try {
+          final carData = {
+            'brand': _brandController.text,
+            'model': _modelController.text,
+            'yearManufactured': _yearManufacturedController.text,
+            'fuelType': _fuelTypeController.text,
+            'transmission': _transmissionController.text,
+            'category': _categoryController.text,
+            'passengerCapacity': _passengerCapacityController.text,
+            'color': _colorController.text,
+            'mileage': _mileageController.text,
+            'condition': _conditionController.text,
+            'price': _priceController.text,
+            'ac': _acValue,
+            'gps': _gpsValue,
+            'location': _locationController.text,
+            'status': _statusController.text,
+            'PropietaryID': propietaryID,
+            'Plate': generateRandomPlate(),
+          };
 
-        setState(() {
-          _message = 'Car registered successfully';
-        });
+
+          final response = await http.post(
+            Uri.parse('https://auto-ya-moviles-backend.azurewebsites.net/api/v1/cars'),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(carData),
+          );
+
+          if (response.statusCode == 200) {
+            _showSnackBar('Car registered successfully', Colors.green);
+          } else if (response.statusCode == 400) {
+            if (response.body.contains('Car with that plate already exists')) {
+              _showSnackBar('Car with that plate already exists', Colors.red);
+            } else {
+              print('HTTP request failed with status: ${response.statusCode}');
+              print('Response body: ${response.body}');
+              _showSnackBar('Failed to register car', Colors.red);
+            }
+          } else {
+            print('HTTP request failed with status: ${response.statusCode}');
+            print('Response body: ${response.body}');
+            _showSnackBar('Failed to register car', Colors.red);
+          }
+        } catch (error) {
+          print('Error: $error');
+          _showSnackBar('An error occurred', Colors.red);
+        }
       } else {
-        // Error al registrar el automóvil
-        setState(() {
-          _message = 'Failed to register car';
-        });
+        _showSnackBar('User ID not found', Colors.red);
       }
     }
+  }
+
+  void _showSnackBar(String message, Color color) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+      duration: Duration(seconds: 3),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Register Car'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _plateController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the plate';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Plate',
-                ),
-              ),
-              TextFormField(
-                controller: _brandController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the brand';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Brand',
-                ),
-              ),
-              TextFormField(
-                controller: _modelController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the model';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Model',
-                ),
-              ),
-              TextFormField(
-                controller: _yearManufacturedController,
-                decoration: InputDecoration(
-                  labelText: 'Year Manufactured',
-                ),
-              ),
-              TextFormField(
-                controller: _fuelTypeController,
-                decoration: InputDecoration(
-                  labelText: 'Fuel Type',
-                ),
-              ),
-              TextFormField(
-                controller: _transmissionController,
-                decoration: InputDecoration(
-                  labelText: 'Transmission',
-                ),
-              ),
-              TextFormField(
-                controller: _categoryController,
-                decoration: InputDecoration(
-                  labelText: 'Category',
-                ),
-              ),
-              TextFormField(
-                controller: _passengerCapacityController,
-                decoration: InputDecoration(
-                  labelText: 'Passenger Capacity',
-                ),
-              ),
-              TextFormField(
-                controller: _colorController,
-                decoration: InputDecoration(
-                  labelText: 'Color',
-                ),
-              ),
-              TextFormField(
-                controller: _mileageController,
-                decoration: InputDecoration(
-                  labelText: 'Mileage',
-                ),
-              ),
-              TextFormField(
-                controller: _conditionController,
-                decoration: InputDecoration(
-                  labelText: 'Condition',
-                ),
-              ),
-              TextFormField(
-                controller: _priceController,
-                decoration: InputDecoration(
-                  labelText: 'Price',
-                ),
-              ),
-              TextFormField(
-                controller: _acController,
-                decoration: InputDecoration(
-                  labelText: 'AC',
-                ),
-              ),
-              TextFormField(
-                controller: _gpsController,
-                decoration: InputDecoration(
-                  labelText: 'GPS',
-                ),
-              ),
-              TextFormField(
-                controller: _locationController,
-                decoration: InputDecoration(
-                  labelText: 'Location',
-                ),
-              ),
-              TextFormField(
-                controller: _statusController,
-                decoration: InputDecoration(
-                  labelText: 'Status',
-                ),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _registerCar,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  'Register Car',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                _message,
-                style: TextStyle(
-                  color: _message.startsWith('Failed') ? Colors.red : Colors.green,
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("lib/assets/img_3.jpg"),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
           ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                SizedBox(height: 100),
+                Center(
+                  child: Text(
+                    'Register Car',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(child: _buildTextFormField(_brandController, 'Brand')),
+                    SizedBox(width: 20),
+                    Expanded(child: _buildTextFormField(_modelController, 'Model')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: _buildTextFormField(_yearManufacturedController, 'Year Manufactured')),
+                    SizedBox(width: 20),
+                    Expanded(child: _buildTextFormField(_fuelTypeController, 'Fuel Type')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: _buildTextFormField(_transmissionController, 'Transmission')),
+                    SizedBox(width: 20),
+                    Expanded(child: _buildTextFormField(_categoryController, 'Category')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: _buildTextFormField(_passengerCapacityController, 'Passenger Capacity')),
+                    SizedBox(width: 20),
+                    Expanded(child: _buildTextFormField(_colorController, 'Color')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: _buildTextFormField(_mileageController, 'Mileage')),
+                    SizedBox(width: 20),
+                    Expanded(child: _buildTextFormField(_conditionController, 'Condition')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: _buildTextFormField(_priceController, 'Price')),
+                    SizedBox(width: 20),
+                    Expanded(child: _buildTextFormField(_locationController, 'Location')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: _buildTextFormField(_statusController, 'Status')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CheckboxListTile(
+                        title: Text('AC', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                        value: _acValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _acValue = value!;
+                          });
+                        },
+                        activeColor: Colors.green,
+                        checkColor: Colors.white,
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
+                    ),
+                    Expanded(
+                      child: CheckboxListTile(
+                        title: Text('GPS', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                        value: _gpsValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _gpsValue = value!;
+                          });
+                        },
+                        activeColor: Colors.green,
+                        checkColor: Colors.white,
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _registerCar,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'Register Car',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextFormField(TextEditingController controller, String labelText) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 5,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: TextFormField(
+        controller: controller,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter the $labelText';
+          }
+          return null;
+        },
+        style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: InputBorder.none,
         ),
       ),
     );
@@ -901,7 +2289,6 @@ class BrandsList extends StatelessWidget {
   }
 }
 
-
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -911,10 +2298,29 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
 
+  late String ownerName;
+  late String ownerPhotoURL;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadOwnerData();
+  }
+
+  Future<void> _loadOwnerData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      ownerName = prefs.getString('ownerName') ?? 'User1';
+      ownerPhotoURL = prefs.getString('ownerPhotoURL') ?? 'https://i.postimg.cc/QMYLzms6/6326055.png';
+    });
+  }
+
   void _handleSubmitted(String text) {
     _textController.clear();
     ChatMessage message = ChatMessage(
       text: text,
+      ownerName: ownerName,
+      ownerPhotoURL: ownerPhotoURL,
     );
     setState(() {
       _messages.insert(0, message);
@@ -943,8 +2349,11 @@ class _ChatScreenState extends State<ChatScreen> {
               controller: _textController,
               onSubmitted: _handleSubmitted,
               decoration: InputDecoration(
-                hintText: "Send a message",
-                contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                hintText: "Enviar un mensaje",
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 15.0,
+                ),
                 border: InputBorder.none,
               ),
             ),
@@ -983,9 +2392,11 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class ChatMessage extends StatelessWidget {
-  ChatMessage({required this.text});
+  ChatMessage({required this.text, required this.ownerName, required this.ownerPhotoURL});
 
   final String text;
+  final String ownerName;
+  final String ownerPhotoURL;
 
   @override
   Widget build(BuildContext context) {
@@ -997,25 +2408,24 @@ class ChatMessage extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
-              backgroundColor: Colors.blue, // Color de fondo del avatar
-              foregroundColor: Colors.white, // Color del texto del avatar
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
               child: ClipOval(
-                child: Image.asset(
-                  'lib/assets/img.png',
+                child: Image.network(
+                  ownerPhotoURL,
                   height: 35,
                   width: 35,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-
           ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'User Name',
+                  ownerName,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -1045,31 +2455,97 @@ class ChatMessage extends StatelessWidget {
 }
 
 
+
+late String userPhotoURL = '';
+
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final String userName = "Julio Garcia";
-  final String userEmail = "juliogarcias@example.com";
-  final String userPhone = "+51908676434";
-  final String userLocation = "Lima, Perú";
+  late String userName;
+  late String userEmail;
+  late String userPhone;
+  late String userDni;
+  late String userPhotoURL;
 
   bool _isEditing = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
+  TextEditingController _dniController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _nameController.text = userName;
-    _emailController.text = userEmail;
-    _phoneController.text = userPhone;
-    _locationController.text = userLocation;
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName') ?? '';
+      userEmail = prefs.getString('userEmail') ?? '';
+      userPhone = prefs.getString('userPhone') ?? '';
+      userDni = prefs.getString('userDni') ?? 'Unknown';
+      userPhotoURL = prefs.getString('userPhotoURL') ?? 'https://i.postimg.cc/QMYLzms6/6326055.png';
+
+      _nameController.text = userName;
+      _emailController.text = userEmail;
+      _phoneController.text = userPhone;
+      _dniController.text = userDni;
+    });
+  }
+
+  Future<void> _saveUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userName', _nameController.text);
+    await prefs.setString('userEmail', _emailController.text);
+    await prefs.setString('userPhone', _phoneController.text);
+    await prefs.setString('userDni', _dniController.text);
+    await prefs.setString('userPhotoURL', userPhotoURL);
+  }
+
+  Future<void> _updateProfile() async {
+    if (_formKey.currentState!.validate()) {
+      final response = await http.put(
+        Uri.parse('https://auto-ya-moviles-backend.azurewebsites.net/api/v1/users'),
+        body: jsonEncode({
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'phoneNumber': _phoneController.text,
+          'dni': _dniController.text,
+          'photoURL': userPhotoURL,
+          // Otros campos necesarios para actualizar el perfil
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        _saveUserData();
+        setState(() {
+          _isEditing = false;
+        });
+      } else {
+        print('Failed to update profile: ${response.statusCode}');
+      }
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        userPhotoURL = pickedFile.path;
+      });
+      // Aquí puedes subir la imagen al servidor y actualizar `userPhotoURL`
+    }
   }
 
   @override
@@ -1080,7 +2556,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text("Información Personal"),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit, color: Colors.white,),
+            icon: Icon(Icons.edit, color: Colors.white),
             onPressed: () {
               setState(() {
                 _isEditing = true;
@@ -1102,16 +2578,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
-          child: CircleAvatar(
-            radius: 50.0,
-            backgroundColor: Colors.blue,
-            child: ClipOval(
-              child: Image.asset(
-                'lib/assets/img.png',
-                height: 90,
-                width: 90,
-                fit: BoxFit.cover,
-              ),
+          child: GestureDetector(
+            onTap: _pickImage,
+            child: CircleAvatar(
+              radius: 50.0,
+              backgroundColor: Colors.blue,
+              backgroundImage: userPhotoURL.startsWith('http')
+                  ? NetworkImage(userPhotoURL)
+                  : FileImage(File(userPhotoURL)) as ImageProvider,
+              child: userPhotoURL == ''
+                  ? Icon(Icons.camera_alt, size: 50, color: Colors.white)
+                  : null,
             ),
           ),
         ),
@@ -1119,7 +2596,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _buildInfoItem("Name:", userName),
         _buildInfoItem("Email:", userEmail),
         _buildInfoItem("Phone:", userPhone),
-        _buildInfoItem("Location:", userLocation),
+        _buildInfoItem("Documento de Identidad:", userDni),
       ],
     );
   }
@@ -1154,21 +2631,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _buildFormField("Name", _nameController),
           _buildFormField("Email", _emailController),
           _buildFormField("Phone", _phoneController),
-          _buildFormField("Location", _locationController),
+          _buildFormField("Documento de Identidad", _dniController),
           SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  // Implementa aquí la lógica para guardar los cambios
-                  setState(() {
-                    _isEditing = false;
-                  });
-                },
+                onPressed: _updateProfile,
                 child: Text("Save"),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.blue, // Color del texto del botón
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.blue, // Color del texto del botón
                 ),
               ),
               ElevatedButton(
@@ -1179,7 +2652,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
                 child: Text("Cancel"),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.grey, // Color del texto del botón
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.grey, // Color del texto del botón
                 ),
               ),
             ],
@@ -1204,6 +2678,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
+
+
 
 
 

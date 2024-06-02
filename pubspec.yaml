@@ -36,6 +36,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   http: ^1.2.1
+  shared_preferences: ^2.2.3
+  image_picker:
+
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +72,12 @@ flutter:
      - assets/
      - lib/assets/car2.png
      - lib/assets/img.png
+     - lib/assets/logogoogle.png
+     - lib/assets/logofacebook.png
+     - lib/assets/logoemail.png
+     - lib/assets/img_1.png
+     - lib/assets/img_3.jpg
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
