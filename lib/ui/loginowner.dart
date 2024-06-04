@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_application_1/ui/login.dart';
 import 'package:flutter_application_1/ui/inicio_sesion.dart';
+
 import 'package:flutter_application_1/ui/registerowner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -25,10 +26,10 @@ Future<void> _login(BuildContext context) async {
     );
 
 if (response.statusCode == 200) {
-      // Si el inicio de sesión es exitoso, redirigir al usuario a la página de inicio de sesión
+  
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => InicioSesion()),
+        MaterialPageRoute(builder: (context) => LoginOwner()),
       );
     } else {
       // Si hay un error, mostrar un mensaje de error
