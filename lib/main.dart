@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
@@ -99,12 +100,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       )
+
+
           : AppBar(
         backgroundColor: Color(0xFF03253C),
         leading: GestureDetector(
           onTap: () {
             // Aquí dirige al Home
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, '/homme');
           },
         ),
         title: Row(
@@ -2077,18 +2080,37 @@ class _FriendsScreenState extends State<SearchCarsScreen> {
     fetchBrands();
   }
 
-  Future<void> fetchBrands() async {
-    final response =
-    await http.get(Uri.parse('http://192.168.0.10:8080/api/favore/v1/all'));
+Future<void> fetchBrands() async {
+  try {
+    final response = await http
+        .get(Uri.parse('http://192.168.0.10:8080/api/favore/v1/all'))
+        .timeout(const Duration(seconds: 30));  
+
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       setState(() {
         brands = jsonResponse['cars'];
       });
     } else {
-      throw Exception('Failed to load brands');
+      throw Exception('Failed to load brands: ${response.statusCode}');
     }
+  } on SocketException catch (e) {
+    // Maneja errores de conexión
+    print('No Internet connection: $e');
+  } on HttpException catch (e) {
+    // Maneja errores HTTP
+    print('HTTP error: $e');
+  } on FormatException catch (e) {
+    // Maneja errores de formato de respuesta
+    print('Format error: $e');
+  } on TimeoutException catch (e) {
+    // Maneja errores de tiempo de espera
+    print('Request timeout: $e');
+  } catch (e) {
+    // Maneja cualquier otro tipo de error
+    print('Unexpected error: $e');
   }
+}
 
   @override
   Widget build(BuildContext context) {
