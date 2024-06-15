@@ -38,7 +38,7 @@ class _NewRequestPageState extends State<NewRequestPage>{
 
   Future<void>fetchNewRequest()async{
     try{
-      final response = await http.get(Uri.parse('https://auto-ya-moviles-backend.azurewebsites.net/api/v1/cars/search/propietaryid/1'));
+      final response = await http.get(Uri.parse('https://auto-ya-moviles-backend.azurewebsites.net/api/v1/cars/1'));
       if(response.statusCode == 200){
         final jsonResponse = json.decode(response.body);
         setState(() {
