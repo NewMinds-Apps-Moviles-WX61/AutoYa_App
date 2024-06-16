@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/ui/tenant_home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
@@ -51,6 +52,9 @@ class MyApp extends StatelessWidget {
           ],
         ),
       ),
+      routes: {
+        '/tenant_home': (context) => TenantHomeScreen(), // Ruta para la nueva vista
+      },
     );
   }
 }
@@ -330,7 +334,7 @@ class Login extends StatelessWidget {
     if (response.statusCode == 200) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => TenantHomeScreen()),
       );
     } else {
       // Si hay un error, mostrar un mensaje de error
@@ -388,7 +392,7 @@ class Login extends StatelessWidget {
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: 'Are you a Tenant? ',
+                            text: 'Are you a Car Owner? ',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

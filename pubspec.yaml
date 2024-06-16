@@ -70,6 +70,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
      - assets/
+     - lib/assets/
      - lib/assets/car2.png
      - lib/assets/img.png
      - lib/assets/logogoogle.png
