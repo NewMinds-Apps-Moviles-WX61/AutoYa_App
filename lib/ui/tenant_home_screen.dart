@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'NewRequestPage.dart';
+import 'SearchCarPage.dart';
 
 class TenantHomeScreen extends StatefulWidget {
   @override
@@ -84,7 +86,10 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
       // Redirigir a la pantalla Cars
         break;
       case 2: // Search
-      // Redirigir a la pantalla Search
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SearchCarPage()),
+        );
         break;
       case 3: // Chats
       // Redirigir a la pantalla Chats
@@ -188,7 +193,10 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
                           ],
                         ),
                         onTap: () {
-                          // Lógica para mostrar detalles del auto
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NewRequestPage(carId: car["id"],)),
+                          );
                         },
                       );
                     } else if (snapshot.hasError) {
