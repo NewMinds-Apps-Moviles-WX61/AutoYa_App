@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/ui/TenantProfileScreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'NewRequestPage.dart';
@@ -95,7 +96,10 @@ class _TenantHomeScreenState extends State<TenantHomeScreen> {
       // Redirigir a la pantalla Chats
         break;
       case 4: // Profile
-      // Redirigir a la pantalla Profile
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TenantProfileScreen()),
+        );
         break;
       default:
       // No hacer nada

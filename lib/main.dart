@@ -332,6 +332,15 @@ class Login extends StatelessWidget {
     );
 
     if (response.statusCode == 200) {
+      // Si el login es exitoso, parsea la respuesta
+      final data = json.decode(response.body);
+
+      // Obtén una instancia de SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+
+      // Guarda el id del usuario en SharedPreferences
+      await prefs.setInt('userId', data['id']);
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => TenantHomeScreen()),
@@ -1812,6 +1821,7 @@ class RegisterCar extends StatefulWidget {
 
 class _RegisterCarState extends State<RegisterCar> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _plateController = TextEditingController();
   final TextEditingController _brandController = TextEditingController();
   final TextEditingController _modelController = TextEditingController();
   final TextEditingController _yearManufacturedController = TextEditingController();
@@ -1824,7 +1834,7 @@ class _RegisterCarState extends State<RegisterCar> {
   final TextEditingController _conditionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
+  //final TextEditingController _statusController = TextEditingController();
   bool _acValue = false;
   bool _gpsValue = false;
 
@@ -1836,6 +1846,7 @@ class _RegisterCarState extends State<RegisterCar> {
       if (propietaryID != null) {
         try {
           final carData = {
+            'plate': generateRandomPlate(),
             'brand': _brandController.text,
             'model': _modelController.text,
             'yearManufactured': _yearManufacturedController.text,
@@ -1850,9 +1861,8 @@ class _RegisterCarState extends State<RegisterCar> {
             'ac': _acValue,
             'gps': _gpsValue,
             'location': _locationController.text,
-            'status': _statusController.text,
-            'PropietaryID': propietaryID,
-            'Plate': generateRandomPlate(),
+            'status': "status",
+            'propietaryId': propietaryID
           };
 
 
@@ -1971,7 +1981,7 @@ class _RegisterCarState extends State<RegisterCar> {
                 ),
                 Row(
                   children: [
-                    Expanded(child: _buildTextFormField(_statusController, 'Status')),
+                    Expanded(child: _buildTextFormField(_plateController, 'Plate')),
                   ],
                 ),
                 Row(

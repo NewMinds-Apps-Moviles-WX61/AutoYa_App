@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'TenantProfileScreen.dart';
 import 'tenant_home_screen.dart';
 import 'SearchCarResultsPage.dart';
 
@@ -25,8 +26,8 @@ class _SearchCarPageState extends State<SearchCarPage> {
   String? condition;
   int? minPrice;
   int? maxPrice;
-  bool ac = false;
-  bool gps = false;
+  bool? ac = false;
+  bool? gps = false;
   String? location;
   bool _showAdvancedFilters = false;
 
@@ -45,6 +46,8 @@ class _SearchCarPageState extends State<SearchCarPage> {
       color = color?.isEmpty ?? true ? null : color;
       mileage = mileage?.isEmpty ?? true ? null : mileage;
       condition = condition?.isEmpty ?? true ? null : condition;
+      ac = ac == false ? null : ac;
+      gps = gps == false ? null : gps;
       location = location?.isEmpty ?? true ? null : location;
 
       // Build the request body
@@ -118,7 +121,10 @@ class _SearchCarPageState extends State<SearchCarPage> {
       // Redirigir a la pantalla Chats
         break;
       case 4: // Profile
-      // Redirigir a la pantalla Profile
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TenantProfileScreen()),
+        );
         break;
       default:
       // No hacer nada
@@ -213,7 +219,7 @@ class _SearchCarPageState extends State<SearchCarPage> {
                           ),
                           SwitchListTile(
                             title: Text('AC'),
-                            value: ac,
+                            value: ac ?? false, // Usa false si ac es null
                             onChanged: (value) {
                               setState(() {
                                 ac = value;
@@ -222,7 +228,7 @@ class _SearchCarPageState extends State<SearchCarPage> {
                           ),
                           SwitchListTile(
                             title: Text('GPS'),
-                            value: gps,
+                            value: gps ?? false,
                             onChanged: (value) {
                               setState(() {
                                 gps = value;
