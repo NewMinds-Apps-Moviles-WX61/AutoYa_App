@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/ui/tenant_home_screen.dart';
+import 'package:flutter_application_1/IU-Tenant/ui/tenant_home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,7 +43,6 @@ class _TenantProfileScreenState extends State<TenantProfileScreen> {
       _selectedIndex = index;
     });
 
-    // Aquí puedes implementar la lógica para redirigir a la pantalla correspondiente
     switch (index) {
       case 0: // Home
         Navigator.push(
